@@ -2,13 +2,118 @@ import axios from 'axios';
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
+const DEMO_MODE = process.env.DEMO_MODE === 'true' || !OPENAI_API_KEY;
+
+// Mock quiz data for demo mode
+const generateMockQuestions = (subject, numQuestions) => {
+  const mockQuestions = {
+    history: [
+      {
+        question: 'In what year did World War II end?',
+        options: ['1943', '1944', '1945', '1946'],
+        correctAnswer: 'C'
+      },
+      {
+        question: 'Who was the first President of the United States?',
+        options: ['Thomas Jefferson', 'George Washington', 'John Adams', 'Benjamin Franklin'],
+        correctAnswer: 'B'
+      },
+      {
+        question: 'What was the main cause of the French Revolution?',
+        options: ['Economic crisis', 'Religious conflict', 'Colonial disputes', 'Succession crisis'],
+        correctAnswer: 'A'
+      },
+      {
+        question: 'Which ancient wonder of the world still stands today?',
+        options: ['Colossus of Rhodes', 'Great Pyramid of Giza', 'Hanging Gardens of Babylon', 'Lighthouse of Alexandria'],
+        correctAnswer: 'B'
+      },
+      {
+        question: 'In what year did the Titanic sink?',
+        options: ['1910', '1911', '1912', '1913'],
+        correctAnswer: 'C'
+      }
+    ],
+    biology: [
+      {
+        question: 'What is the powerhouse of the cell?',
+        options: ['Nucleus', 'Mitochondria', 'Ribosome', 'Golgi apparatus'],
+        correctAnswer: 'B'
+      },
+      {
+        question: 'How many chromosomes do humans have?',
+        options: ['23', '46', '48', '52'],
+        correctAnswer: 'B'
+      },
+      {
+        question: 'What is the process by which plants make their own food?',
+        options: ['Respiration', 'Photosynthesis', 'Fermentation', 'Digestion'],
+        correctAnswer: 'B'
+      },
+      {
+        question: 'Which blood type is the universal donor?',
+        options: ['A', 'B', 'AB', 'O'],
+        correctAnswer: 'D'
+      },
+      {
+        question: 'What is the largest organ in the human body?',
+        options: ['Heart', 'Brain', 'Liver', 'Skin'],
+        correctAnswer: 'D'
+      }
+    ],
+    programming: [
+      {
+        question: 'What does HTML stand for?',
+        options: ['Hyper Text Markup Language', 'High Tech Modern Language', 'Home Tool Markup Language', 'Hyperlinks and Text Markup Language'],
+        correctAnswer: 'A'
+      },
+      {
+        question: 'Which of these is a server-side language?',
+        options: ['JavaScript', 'Python', 'Java', 'All of the above'],
+        correctAnswer: 'D'
+      },
+      {
+        question: 'What does CSS stand for?',
+        options: ['Computer Style Sheets', 'Cascading Style Sheets', 'Creative Style Sheets', 'Coded Style Sheets'],
+        correctAnswer: 'B'
+      },
+      {
+        question: 'Which data structure uses LIFO?',
+        options: ['Queue', 'Stack', 'Array', 'Linked List'],
+        correctAnswer: 'B'
+      },
+      {
+        question: 'What is the time complexity of binary search?',
+        options: ['O(n)', 'O(n²)', 'O(log n)', 'O(1)'],
+        correctAnswer: 'C'
+      }
+    ]
+  };
+
+  // Get questions for the subject or use programming as default
+  const questions = mockQuestions[subject.toLowerCase()] || mockQuestions.programming;
+  
+  // Return only the requested number of questions
+  return questions.slice(0, Math.min(numQuestions, questions.length));
+};
 
 export const generateQuestionsFromSubject = async (subject, numQuestions) => {
+  // Use demo mode if API key not configured or DEMO_MODE enabled
+  if (DEMO_MODE) {
+    console.log('📚 DEMO MODE - Generating mock questions for subject:', subject);
+    return generateMockQuestions(subject, numQuestions);
+  }
+
+  if (!OPENAI_API_KEY) {
+    throw new Error('OPENAI_API_KEY is not configured. Please add it to .env file');
+  }
+
   const prompt = `Generate ${numQuestions} multiple choice quiz questions about "${subject}". 
   For each question, provide 4 options (A, B, C, D) and indicate the correct answer.
   Return the result as a JSON array with objects containing: question, options (array of 4 strings), and correctAnswer (A, B, C, or D).`;
 
   try {
+    console.log('Calling OpenAI API for subject:', subject);
     const response = await axios.post(
       OPENAI_API_URL,
       {
@@ -31,12 +136,23 @@ export const generateQuestionsFromSubject = async (subject, numQuestions) => {
     }
     throw new Error('Failed to parse AI response');
   } catch (error) {
-    console.error('Error generating questions:', error);
+    console.error('Error generating questions:', error.response?.data || error.message);
     throw error;
   }
 };
 
 export const generateQuestionsFromText = async (text, numQuestions) => {
+  // Use demo mode if API key not configured or DEMO_MODE enabled
+  if (DEMO_MODE) {
+    console.log('📚 DEMO MODE - Generating mock questions from text');
+    // Return mock questions based on text content
+    return generateMockQuestions('programming', numQuestions);
+  }
+
+  if (!OPENAI_API_KEY) {
+    throw new Error('OPENAI_API_KEY is not configured. Please add it to .env file');
+  }
+
   const prompt = `Based on the following text, generate ${numQuestions} multiple choice quiz questions.
   Text: "${text}"
   
@@ -44,6 +160,7 @@ export const generateQuestionsFromText = async (text, numQuestions) => {
   Return the result as a JSON array with objects containing: question, options (array of 4 strings), and correctAnswer (A, B, C, or D).`;
 
   try {
+    console.log('Calling OpenAI API for text input');
     const response = await axios.post(
       OPENAI_API_URL,
       {
@@ -66,7 +183,7 @@ export const generateQuestionsFromText = async (text, numQuestions) => {
     }
     throw new Error('Failed to parse AI response');
   } catch (error) {
-    console.error('Error generating questions from text:', error);
+    console.error('Error generating questions from text:', error.response?.data || error.message);
     throw error;
   }
 };
