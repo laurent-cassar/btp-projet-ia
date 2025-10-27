@@ -1,6 +1,6 @@
-import { QuizGenerator } from './QuizGenerator';
-import { QuizList } from './QuizList';
-import { ErrorAlert } from './ErrorAlert';
+import { QuizGenerator } from '../components/QuizGenerator';
+import { QuizList } from '../components/QuizList';
+import { ErrorAlert } from '../components/ErrorAlert';
 
 export const HomePage = () => {
   return (
