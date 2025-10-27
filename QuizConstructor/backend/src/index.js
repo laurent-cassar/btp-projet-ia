@@ -1,8 +1,8 @@
 import 'dotenv/config.js';
 import express from 'express';
 import cors from 'cors';
-import quizRoutes from './routes/quizRoutes.js';
-import { errorHandler } from './middleware/errorHandler.js';
+import quizRoutes from '../routes/quizRoutes.js';
+import { errorHandler } from '../middleware/errorHandler.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
