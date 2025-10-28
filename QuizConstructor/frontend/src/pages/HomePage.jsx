@@ -8,7 +8,7 @@ export const HomePage = () => {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold text-gray-800 mb-4">
-            ✨ QuizConstructor
+            QuizConstructor
           </h1>
           <p className="text-xl text-gray-600">
             Generate unlimited quizzes from any subject, text, or file
