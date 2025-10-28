@@ -1,8 +1,10 @@
 import { useQuiz } from '../hooks/useQuiz';
-import { Trash2 } from 'lucide-react';
+import { Trash2, ChevronDown, ChevronUp } from 'lucide-react';
+import { useState } from 'react';
 
 export const QuizList = () => {
   const { quizzes, removeQuiz } = useQuiz();
+  const [expandedQuiz, setExpandedQuiz] = useState(null);
 
   if (quizzes.length === 0) {
     return (
@@ -18,21 +20,82 @@ export const QuizList = () => {
       <div className="grid gap-4">
         {quizzes.map((quiz) => (
           <div key={quiz.id} className="bg-white rounded-lg shadow p-6">
-            <div className="flex justify-between items-start">
-              <div>
+            {/* Quiz Header */}
+            <div className="flex justify-between items-start mb-4">
+              <div className="flex-1">
                 <h3 className="text-xl font-bold text-gray-800">{quiz.subject}</h3>
                 <p className="text-gray-600">{quiz.num_questions} questions</p>
                 <p className="text-sm text-gray-500">
                   Created: {new Date(quiz.created_at).toLocaleDateString()}
                 </p>
               </div>
-              <button
-                onClick={() => removeQuiz(quiz.id)}
-                className="p-2 hover:bg-red-100 rounded-lg transition"
-              >
-                <Trash2 size={20} className="text-red-500" />
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setExpandedQuiz(expandedQuiz === quiz.id ? null : quiz.id)}
+                  className="p-2 hover:bg-blue-100 rounded-lg transition"
+                >
+                  {expandedQuiz === quiz.id ? (
+                    <ChevronUp size={20} className="text-blue-500" />
+                  ) : (
+                    <ChevronDown size={20} className="text-blue-500" />
+                  )}
+                </button>
+                <button
+                  onClick={() => removeQuiz(quiz.id)}
+                  className="p-2 hover:bg-red-100 rounded-lg transition"
+                >
+                  <Trash2 size={20} className="text-red-500" />
+                </button>
+              </div>
             </div>
+
+            {/* Quiz Questions */}
+            {expandedQuiz === quiz.id && (
+              <div className="border-t pt-4 space-y-6">
+                {quiz.questions && quiz.questions.length > 0 ? (
+                  quiz.questions.map((question, qIndex) => (
+                    <div key={qIndex} className="bg-gray-50 p-4 rounded-lg">
+                      <h4 className="font-semibold text-gray-800 mb-3">
+                        {qIndex + 1}. {question.question}
+                      </h4>
+                      <div className="space-y-2">
+                        {question.options && question.options.length > 0 ? (
+                          question.options.map((option, oIndex) => (
+                            <div
+                              key={oIndex}
+                              className={`p-2 rounded border-2 cursor-pointer transition ${
+                                question.correctAnswer === oIndex
+                                  ? 'border-green-500 bg-green-50'
+                                  : 'border-gray-300 hover:border-gray-400'
+                              }`}
+                            >
+                              <span className="font-semibold text-gray-700">
+                                {String.fromCharCode(65 + oIndex)}.
+                              </span>{' '}
+                              {option}
+                              {question.correctAnswer === oIndex && (
+                                <span className="ml-2 text-green-600 font-semibold">✓ Correct</span>
+                              )}
+                            </div>
+                          ))
+                        ) : (
+                          <p className="text-gray-500">No options available</p>
+                        )}
+                      </div>
+                      {question.explanation && (
+                        <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded">
+                          <p className="text-sm text-blue-700">
+                            <strong>Explanation:</strong> {question.explanation}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-gray-500">No questions available</p>
+                )}
+              </div>
+            )}
           </div>
         ))}
       </div>
