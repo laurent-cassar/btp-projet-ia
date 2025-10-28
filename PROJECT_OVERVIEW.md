@@ -1,8 +1,8 @@
 # QuizConstructor Project - Complete Overview for Copilot
 
-**Last Updated**: 2025-10-28 14:41:20 UTC  
+**Last Updated**: 2025-10-28 14:52:13 UTC  
 **Project Status**: ✅ ACTIVE DEVELOPMENT  
-**Current Version**: 1.4.1
+**Current Version**: 1.4.2
 
 ---
 
@@ -24,9 +24,9 @@ The application uses OpenAI's GPT API for quiz generation, with a demo mode for 
 | **Repository** | https://github.com/laurent-cassar/btp-projet-ia |
 | **Project Name** | btp-projet-ia (QuizConstructor) |
 | **Current Branch** | feature/quizConstructor |
-| **Current Version** | 1.4.1 |
-| **Total Commits** | 23+ (11 initial + 12 improvements) |
-| **Last 6 Versions** | 1.4.1 (Gemini fix), 1.4.0 (Gemini), 1.3.0 (multilingual), 1.2.1 (favicon), 1.2.0 (quiz display), 1.1.0 (demo fixes) |
+| **Current Version** | 1.4.2 |
+| **Total Commits** | 24+ (11 initial + 13 improvements) |
+| **Last 7 Versions** | 1.4.2 (Security fix), 1.4.1 (Gemini fix), 1.4.0 (Gemini), 1.3.0 (multilingual), 1.2.1 (favicon), 1.2.0 (quiz display), 1.1.0 (demo fixes) |
 | **Primary Language** | JavaScript/JSX |
 | **Deployment Status** | Ready (feature branch, needs merge to main) |
 

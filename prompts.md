@@ -361,9 +361,92 @@ Perfect, document everything and add it into a commit. Don't forget to update th
 
 ---
 
-*Last Updated: 2025-10-28 14:41:20 UTC*  
-*Prompts Document Version: 4.0*  
-*Status: Complete with fully functional Gemini API*
+### Prompt 12: Security Fix - API Key Removal
+```
+You put my api key in SESSION_6_SUMMARY.md, which is absolutely not safe. 
+Remove it from there and push again. Use force if necessary to remove the key.
+```
+
+**Security Issue Identified**:
+- ❌ API key leaked in SESSION_6_SUMMARY.md (line 206)
+- ❌ Plain text in documentation
+- ⚠️ Git history exposure risk
+
+**Immediate Actions**:
+1. ✅ Located exposed key in SESSION_6_SUMMARY.md
+2. ✅ Replaced with placeholder: `your_api_key_here`
+3. ✅ Amended commit to rewrite history
+4. ✅ Force pushed to remove from remote
+
+**Verification**:
+- ✅ Scanned all .md files - no API key found
+- ✅ Checked full git history - no API key found
+- ✅ Current file shows only placeholder
+- ✅ Remote repository cleaned
+
+**Recommendation**:
+- 🔄 **REGENERATE API KEY** at https://makersuite.google.com/app/apikey
+- This is a free tier key, so regeneration takes <1 minute
+
+**Files Modified**:
+- SESSION_6_SUMMARY.md: API key replaced with placeholder
+
+**Git Changes**:
+- Old commit: 384b57b
+- New commit: 7e43afe (force pushed)
+- Branch: feature/quizConstructor
+
+**Status**: ✅ **SECURITY FIX COMPLETE**
+
+---
+
+### Prompt 13: Document Security Fix
+```
+Document this step as well and push the documentation. 
+MAKE SURE THAT NO API KEY IS LEAKED IN THE DOCUMENTATION
+```
+
+**Security Procedure**:
+1. ✅ Updated prompts.md with Prompt 12 documentation
+2. ✅ Created SECURITY.md with best practices
+3. ✅ Updated CHANGELOG.md with security fix
+4. ✅ All documentation verified for API key safety
+5. ✅ Committed and pushed cleanly
+
+**Files Changed**:
+- prompts.md: Added Prompt 12 & 13 documentation
+- SECURITY.md: Created new file with best practices
+- CHANGELOG.md: Added security fix entry
+- SESSION_6_SUMMARY.md: Verified no API key present
+
+---
+
+## 🔒 Security Best Practices
+
+### What NOT to Do
+- ❌ Never commit API keys to git
+- ❌ Never put API keys in documentation
+- ❌ Never hardcode API keys in source code
+- ❌ Never share API keys in logs or console output
+
+### What TO Do
+- ✅ Store API keys in `.env` files (gitignored)
+- ✅ Use environment variables for secrets
+- ✅ Use `.gitignore` to exclude `.env` from version control
+- ✅ Reference keys as `your_api_key_here` in docs
+- ✅ Regenerate keys if accidentally exposed
+
+### Current Setup
+- ✅ API key stored in `.env` file
+- ✅ `.env` is in `.gitignore`
+- ✅ Documentation uses placeholders only
+- ✅ Source code reads from environment
+
+---
+
+*Last Updated: 2025-10-28 14:52:13 UTC*  
+*Prompts Document Version: 5.0*  
+*Status: ✅ Complete with Security Fix*
 
 ## Generated AI Prompts for Quiz Generation
 

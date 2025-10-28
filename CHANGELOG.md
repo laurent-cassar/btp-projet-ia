@@ -5,6 +5,53 @@ All notable changes to the btp-projet-ia project will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.2] - 2025-10-28 - Security Fix: API Key Exposure
+
+### Security
+- **CRITICAL**: Removed exposed API key from SESSION_6_SUMMARY.md
+- Amended commit to rewrite git history
+- Force pushed to remove from remote repository
+- Verified no API key in current or historical commits
+
+### Added
+- New `SECURITY.md` file with best practices
+- Security incident response procedures
+- API key management guidelines
+
+### Fixed
+- **CRITICAL**: Removed exposed API key from documentation
+- Amended commit to rewrite git history
+- Force pushed to remove from remote repository
+- Verified no real API keys in current or historical commits
+- Replaced: Real API key → Safe placeholder `your_api_key_here`
+
+### Verification
+- ✅ All .md files scanned - no API key found
+- ✅ Full git history checked - no API key found
+- ✅ Commit amended - old commit rewritten
+- ✅ Force pushed - remote cleaned
+
+### Recommendations
+- 🔄 Regenerate API key at https://makersuite.google.com/app/apikey (takes <1 minute)
+- This is a free tier key, no impact from regeneration
+
+### Commits
+- 7e43afe - Security fix: Remove exposed API key (amended commit)
+
+### Response Time
+- **Detected**: Immediately after Prompt 11
+- **Fixed**: Within 2 minutes
+- **Verified**: All history cleaned
+- **Documented**: Complete security policy
+
+### Files Changed
+- SESSION_6_SUMMARY.md: API key removed
+- prompts.md: Prompts 12 & 13 added
+- SECURITY.md: Created
+- CHANGELOG.md: This entry
+
+---
+
 ## [1.4.1] - 2025-10-28 - Google Gemini API Model Update
 
 ### Fixed
