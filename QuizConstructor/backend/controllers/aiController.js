@@ -11,81 +11,81 @@ const generateMockQuestions = (subject, numQuestions) => {
       {
         question: 'In what year did World War II end?',
         options: ['1943', '1944', '1945', '1946'],
-        correctAnswer: 'C'
+        correctAnswer: 2
       },
       {
         question: 'Who was the first President of the United States?',
         options: ['Thomas Jefferson', 'George Washington', 'John Adams', 'Benjamin Franklin'],
-        correctAnswer: 'B'
+        correctAnswer: 1
       },
       {
         question: 'What was the main cause of the French Revolution?',
         options: ['Economic crisis', 'Religious conflict', 'Colonial disputes', 'Succession crisis'],
-        correctAnswer: 'A'
+        correctAnswer: 0
       },
       {
         question: 'Which ancient wonder of the world still stands today?',
         options: ['Colossus of Rhodes', 'Great Pyramid of Giza', 'Hanging Gardens of Babylon', 'Lighthouse of Alexandria'],
-        correctAnswer: 'B'
+        correctAnswer: 1
       },
       {
         question: 'In what year did the Titanic sink?',
         options: ['1910', '1911', '1912', '1913'],
-        correctAnswer: 'C'
+        correctAnswer: 2
       }
     ],
     biology: [
       {
         question: 'What is the powerhouse of the cell?',
         options: ['Nucleus', 'Mitochondria', 'Ribosome', 'Golgi apparatus'],
-        correctAnswer: 'B'
+        correctAnswer: 1
       },
       {
         question: 'How many chromosomes do humans have?',
         options: ['23', '46', '48', '52'],
-        correctAnswer: 'B'
+        correctAnswer: 1
       },
       {
         question: 'What is the process by which plants make their own food?',
         options: ['Respiration', 'Photosynthesis', 'Fermentation', 'Digestion'],
-        correctAnswer: 'B'
+        correctAnswer: 1
       },
       {
         question: 'Which blood type is the universal donor?',
         options: ['A', 'B', 'AB', 'O'],
-        correctAnswer: 'D'
+        correctAnswer: 3
       },
       {
         question: 'What is the largest organ in the human body?',
         options: ['Heart', 'Brain', 'Liver', 'Skin'],
-        correctAnswer: 'D'
+        correctAnswer: 3
       }
     ],
     programming: [
       {
         question: 'What does HTML stand for?',
         options: ['Hyper Text Markup Language', 'High Tech Modern Language', 'Home Tool Markup Language', 'Hyperlinks and Text Markup Language'],
-        correctAnswer: 'A'
+        correctAnswer: 0
       },
       {
         question: 'Which of these is a server-side language?',
         options: ['JavaScript', 'Python', 'Java', 'All of the above'],
-        correctAnswer: 'D'
+        correctAnswer: 3
       },
       {
         question: 'What does CSS stand for?',
         options: ['Computer Style Sheets', 'Cascading Style Sheets', 'Creative Style Sheets', 'Coded Style Sheets'],
-        correctAnswer: 'B'
+        correctAnswer: 1
       },
       {
         question: 'Which data structure uses LIFO?',
         options: ['Queue', 'Stack', 'Array', 'Linked List'],
-        correctAnswer: 'B'
+        correctAnswer: 1
       },
       {
         question: 'What is the time complexity of binary search?',
         options: ['O(n)', 'O(n²)', 'O(log n)', 'O(1)'],
-        correctAnswer: 'C'
+        correctAnswer: 2
       }
     ]
   };

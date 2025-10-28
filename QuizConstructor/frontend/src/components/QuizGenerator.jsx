@@ -9,7 +9,7 @@ export const QuizGenerator = () => {
   const [numQuestions, setNumQuestions] = useState(10);
   const [text, setText] = useState('');
   const [file, setFile] = useState(null);
-  const { setLoading, setError } = useQuiz();
+  const { setLoading, setError, addQuiz } = useQuiz();
 
   const handleGenerateFromSubject = async () => {
     if (!subject.trim()) {
@@ -20,6 +20,15 @@ export const QuizGenerator = () => {
     try {
       const result = await generateQuizFromSubject(subject, numQuestions);
       console.log('Quiz generated:', result);
+      // Add the generated quiz to the context
+      const quiz = {
+        id: Date.now(),
+        subject,
+        num_questions: numQuestions,
+        questions: result.questions,
+        created_at: new Date().toISOString()
+      };
+      addQuiz(quiz);
       setSubject('');
       setError(null);
     } catch (err) {
@@ -38,6 +47,15 @@ export const QuizGenerator = () => {
     try {
       const result = await generateQuizFromText(text, numQuestions);
       console.log('Quiz generated:', result);
+      // Add the generated quiz to the context
+      const quiz = {
+        id: Date.now(),
+        subject: 'Text Content',
+        num_questions: numQuestions,
+        questions: result.questions,
+        created_at: new Date().toISOString()
+      };
+      addQuiz(quiz);
       setText('');
       setError(null);
     } catch (err) {
@@ -56,6 +74,15 @@ export const QuizGenerator = () => {
     try {
       const result = await generateQuizFromFile(file, numQuestions);
       console.log('Quiz generated:', result);
+      // Add the generated quiz to the context
+      const quiz = {
+        id: Date.now(),
+        subject: file.name,
+        num_questions: numQuestions,
+        questions: result.questions,
+        created_at: new Date().toISOString()
+      };
+      addQuiz(quiz);
       setFile(null);
       setError(null);
     } catch (err) {
