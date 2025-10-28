@@ -7,9 +7,12 @@ export const HomePage = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-gray-800 mb-4">
-            QuizConstructor
-          </h1>
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <img src="/favicon.png" alt="Quiz Constructor" className="w-12 h-12" />
+            <h1 className="text-5xl font-bold text-gray-800">
+              QuizConstructor
+            </h1>
+          </div>
           <p className="text-xl text-gray-600">
             Generate unlimited quizzes from any subject, text, or file
           </p>
