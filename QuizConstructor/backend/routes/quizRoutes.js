@@ -15,8 +15,8 @@ router.delete('/:id', quizController.deleteQuiz);
 // AI generation routes
 router.post('/generate/subject', async (req, res, next) => {
   try {
-    const { subject, numQuestions } = req.body;
-    const questions = await aiController.generateQuestionsFromSubject(subject, numQuestions);
+    const { subject, numQuestions, model } = req.body;
+    const questions = await aiController.generateQuestionsFromSubject(subject, numQuestions, model);
     res.json({ questions });
   } catch (error) {
     next(error);
@@ -25,8 +25,8 @@ router.post('/generate/subject', async (req, res, next) => {
 
 router.post('/generate/text', async (req, res, next) => {
   try {
-    const { text, numQuestions } = req.body;
-    const questions = await aiController.generateQuestionsFromText(text, numQuestions);
+    const { text, numQuestions, model } = req.body;
+    const questions = await aiController.generateQuestionsFromText(text, numQuestions, model);
     res.json({ questions });
   } catch (error) {
     next(error);
@@ -35,7 +35,7 @@ router.post('/generate/text', async (req, res, next) => {
 
 router.post('/generate/file', upload.single('file'), async (req, res, next) => {
   try {
-    const { numQuestions } = req.body;
+    const { numQuestions, model } = req.body;
     // File processing logic will be implemented
     res.json({ message: 'File processing endpoint' });
   } catch (error) {

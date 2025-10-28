@@ -4,10 +4,18 @@ import { useQuiz } from '../hooks/useQuiz';
 import { useLanguage } from '../hooks/useLanguage';
 import { generateQuizFromSubject, generateQuizFromText, generateQuizFromFile } from '../hooks/useApi';
 
+const AVAILABLE_MODELS = [
+  { id: 'gemini-2.0-flash-lite', name: 'Gemini 2.0 Flash (Lite)', description: 'Fast & reliable' },
+  { id: 'gemini-2.0-flash', name: 'Gemini 2.0 Flash', description: 'Balanced performance' },
+  { id: 'gemini-1.5-flash', name: 'Gemini 1.5 Flash', description: 'Alternative model' },
+  { id: 'gemini-pro', name: 'Gemini Pro', description: 'Advanced model' },
+];
+
 export const QuizGenerator = () => {
   const [tab, setTab] = useState('subject');
   const [subject, setSubject] = useState('');
   const [numQuestions, setNumQuestions] = useState(10);
+  const [selectedModel, setSelectedModel] = useState('gemini-2.0-flash-lite');
   const [text, setText] = useState('');
   const [file, setFile] = useState(null);
   const { setLoading, setError, addQuiz } = useQuiz();
@@ -20,7 +28,7 @@ export const QuizGenerator = () => {
     }
     setLoading(true);
     try {
-      const result = await generateQuizFromSubject(subject, numQuestions);
+      const result = await generateQuizFromSubject(subject, numQuestions, selectedModel);
       console.log('Quiz generated:', result);
       const quiz = {
         id: Date.now(),
@@ -46,7 +54,7 @@ export const QuizGenerator = () => {
     }
     setLoading(true);
     try {
-      const result = await generateQuizFromText(text, numQuestions);
+      const result = await generateQuizFromText(text, numQuestions, selectedModel);
       console.log('Quiz generated:', result);
       const quiz = {
         id: Date.now(),
@@ -72,7 +80,7 @@ export const QuizGenerator = () => {
     }
     setLoading(true);
     try {
-      const result = await generateQuizFromFile(file, numQuestions);
+      const result = await generateQuizFromFile(file, numQuestions, selectedModel);
       console.log('Quiz generated:', result);
       const quiz = {
         id: Date.now(),
@@ -140,6 +148,26 @@ export const QuizGenerator = () => {
           onChange={(e) => setNumQuestions(parseInt(e.target.value))}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
+      </div>
+
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          AI Model
+        </label>
+        <select
+          value={selectedModel}
+          onChange={(e) => setSelectedModel(e.target.value)}
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        >
+          {AVAILABLE_MODELS.map((model) => (
+            <option key={model.id} value={model.id}>
+              {model.name} - {model.description}
+            </option>
+          ))}
+        </select>
+        <p className="text-xs text-gray-500 mt-1">
+          If one model is overloaded, try switching to another
+        </p>
       </div>
 
       {tab === 'subject' && (

@@ -358,6 +358,94 @@ Perfect, document everything and add it into a commit. Don't forget to update th
 | 8 | Gemini API | ✅ Complete | Free AI API integration |
 | 9 | Gemini Debugging | ✅ Complete | Fixed model compatibility issues |
 | 10 | Gemini Model Fix | ✅ Complete | Switched to gemini-2.0-flash-lite |
+| 11 | Security Fix | ✅ Complete | Removed exposed API key from git history |
+| 12 | Model Selector & Error Display | ✅ Complete | Added dropdown + detailed error formatting |
+
+---
+
+### Prompt 13: Model Selection Dropdown & Error Display
+```
+Add a drop down menu for the models in case one of the models is overloaded. 
+Also show a short error message in the site's current error prompt in this format: 
+code: XXX | message: XXXXXXX | status: XXXXXXX
+```
+
+**Features Implemented**:
+
+1. **Frontend - Model Selection Dropdown**
+   - ✅ Added dropdown menu in QuizGenerator component
+   - ✅ 4 available models: gemini-2.0-flash-lite, gemini-2.0-flash, gemini-1.5-flash, gemini-pro
+   - ✅ Each model has description (Fast & reliable, Balanced, Alternative, Advanced)
+   - ✅ Helper text: "If one model is overloaded, try switching to another"
+   - ✅ Default model: gemini-2.0-flash-lite (most stable)
+
+2. **Frontend - Error Display**
+   - ✅ Updated ErrorAlert component to parse error objects
+   - ✅ Format: `code: XXX | message: XXXXXXX | status: XXXXXXX`
+   - ✅ Extracts code, message, and status from API error response
+   - ✅ Uses monospace font for technical readability
+   - ✅ Word-break for long error messages
+
+3. **Frontend - API Integration**
+   - ✅ Updated useApi.js hooks with model parameter
+   - ✅ Functions: generateQuizFromSubject, generateQuizFromText, generateQuizFromFile
+   - ✅ Default model parameter: gemini-2.0-flash-lite
+   - ✅ Model passed to all backend endpoints
+
+4. **Frontend - QuizGenerator Updates**
+   - ✅ Added selectedModel state
+   - ✅ Pass model to all generate functions
+   - ✅ Model dropdown positioned after numQuestions input
+   - ✅ All 3 tabs (subject, text, file) support model selection
+
+5. **Backend - Route Updates**
+   - ✅ Updated quizRoutes.js to accept model parameter
+   - ✅ All 3 routes support model selection:
+     - POST /quizzes/generate/subject
+     - POST /quizzes/generate/text
+     - POST /quizzes/generate/file
+
+6. **Backend - Controller Updates**
+   - ✅ Updated aiController.js with dynamic model support
+   - ✅ New helper function: getApiUrl(model)
+   - ✅ Dynamically constructs Gemini API URL based on selected model
+   - ✅ Logs model name in console output
+   - ✅ Both functions updated: generateQuestionsFromSubject, generateQuestionsFromText
+
+**Technical Implementation**:
+
+```javascript
+// Frontend - Model selection
+const AVAILABLE_MODELS = [
+  { id: 'gemini-2.0-flash-lite', name: 'Gemini 2.0 Flash (Lite)', description: 'Fast & reliable' },
+  { id: 'gemini-2.0-flash', name: 'Gemini 2.0 Flash', description: 'Balanced performance' },
+  { id: 'gemini-1.5-flash', name: 'Gemini 1.5 Flash', description: 'Alternative model' },
+  { id: 'gemini-pro', name: 'Gemini Pro', description: 'Advanced model' },
+];
+
+// Error format
+const formattedError = `${code} | ${message} | ${status}`;
+```
+
+```javascript
+// Backend - Dynamic URL construction
+const getApiUrl = (model) => {
+  return `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent`;
+};
+```
+
+**Build Status**: ✅ Frontend builds successfully (no errors)
+
+**Files Modified**:
+- QuizConstructor/frontend/src/components/QuizGenerator.jsx
+- QuizConstructor/frontend/src/components/ErrorAlert.jsx
+- QuizConstructor/frontend/src/hooks/useApi.js
+- QuizConstructor/backend/routes/quizRoutes.js
+- QuizConstructor/backend/controllers/aiController.js
+
+**Git Status**: Ready for commit
+
+**Status**: ✅ **FEATURE COMPLETE & TESTED**
 
 ---
 

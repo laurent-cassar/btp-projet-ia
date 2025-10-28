@@ -2,11 +2,12 @@ import axios from 'axios';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
-export const generateQuizFromSubject = async (subject, numQuestions) => {
+export const generateQuizFromSubject = async (subject, numQuestions, model = 'gemini-2.0-flash-lite') => {
   try {
     const response = await axios.post(`${API_BASE_URL}/quizzes/generate/subject`, {
       subject,
       numQuestions,
+      model,
     });
     return response.data;
   } catch (error) {
@@ -14,11 +15,12 @@ export const generateQuizFromSubject = async (subject, numQuestions) => {
   }
 };
 
-export const generateQuizFromText = async (text, numQuestions) => {
+export const generateQuizFromText = async (text, numQuestions, model = 'gemini-2.0-flash-lite') => {
   try {
     const response = await axios.post(`${API_BASE_URL}/quizzes/generate/text`, {
       text,
       numQuestions,
+      model,
     });
     return response.data;
   } catch (error) {
@@ -26,11 +28,12 @@ export const generateQuizFromText = async (text, numQuestions) => {
   }
 };
 
-export const generateQuizFromFile = async (file, numQuestions) => {
+export const generateQuizFromFile = async (file, numQuestions, model = 'gemini-2.0-flash-lite') => {
   try {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('numQuestions', numQuestions);
+    formData.append('model', model);
 
     const response = await axios.post(`${API_BASE_URL}/quizzes/generate/file`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },

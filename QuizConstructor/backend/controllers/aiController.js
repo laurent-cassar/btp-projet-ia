@@ -1,8 +1,13 @@
 import axios from 'axios';
 
 const GOOGLE_GEMINI_API_KEY = process.env.GOOGLE_GEMINI_API_KEY;
-const GOOGLE_GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash-lite:generateContent';
+const GOOGLE_GEMINI_BASE_URL = 'https://generativelanguage.googleapis.com/v1/models';
 const DEMO_MODE = process.env.DEMO_MODE === 'true' || !GOOGLE_GEMINI_API_KEY;
+
+// Helper to get full API URL based on model
+const getApiUrl = (model) => {
+  return `${GOOGLE_GEMINI_BASE_URL}/${model}:generateContent`;
+};
 
 // Mock quiz data for demo mode
 const generateMockQuestions = (subject, numQuestions) => {
@@ -97,7 +102,7 @@ const generateMockQuestions = (subject, numQuestions) => {
   return questions.slice(0, Math.min(numQuestions, questions.length));
 };
 
-export const generateQuestionsFromSubject = async (subject, numQuestions) => {
+export const generateQuestionsFromSubject = async (subject, numQuestions, model = 'gemini-2.0-flash-lite') => {
   // Use demo mode if API key not configured or DEMO_MODE enabled
   if (DEMO_MODE) {
     console.log('📚 DEMO MODE - Generating mock questions for subject:', subject);
@@ -114,9 +119,9 @@ export const generateQuestionsFromSubject = async (subject, numQuestions) => {
   Only return the JSON array, no additional text.`;
 
   try {
-    console.log('🔍 Calling Google Gemini API for subject:', subject);
+    console.log('🔍 Calling Google Gemini API for subject:', subject, '| Model:', model);
     const response = await axios.post(
-      `${GOOGLE_GEMINI_API_URL}?key=${GOOGLE_GEMINI_API_KEY}`,
+      `${getApiUrl(model)}?key=${GOOGLE_GEMINI_API_KEY}`,
       {
         contents: [
           {
@@ -149,7 +154,7 @@ export const generateQuestionsFromSubject = async (subject, numQuestions) => {
   }
 };
 
-export const generateQuestionsFromText = async (text, numQuestions) => {
+export const generateQuestionsFromText = async (text, numQuestions, model = 'gemini-2.0-flash-lite') => {
   // Use demo mode if API key not configured or DEMO_MODE enabled
   if (DEMO_MODE) {
     console.log('📚 DEMO MODE - Generating mock questions from text');
@@ -168,9 +173,9 @@ export const generateQuestionsFromText = async (text, numQuestions) => {
   Only return the JSON array, no additional text.`;
 
   try {
-    console.log('🔍 Calling Google Gemini API for text input');
+    console.log('🔍 Calling Google Gemini API for text input | Model:', model);
     const response = await axios.post(
-      `${GOOGLE_GEMINI_API_URL}?key=${GOOGLE_GEMINI_API_KEY}`,
+      `${getApiUrl(model)}?key=${GOOGLE_GEMINI_API_KEY}`,
       {
         contents: [
           {
