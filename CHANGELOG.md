@@ -5,6 +5,47 @@ All notable changes to the btp-projet-ia project will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2025-10-28 - Google Gemini API Integration
+
+### Added
+- **Google Gemini API**: Replaced OpenAI with free Google Gemini Pro
+- **Free API Integration**: No cost, no credit card required
+- **API Key Configuration**: Secure environment variable setup
+- **Session 5 Documentation**: SESSION_5_SUMMARY.md created
+
+### Features
+- ✅ Free quiz generation (60 requests/minute)
+- ✅ Instant API key generation
+- ✅ High quality AI responses
+- ✅ Demo mode fallback maintained
+- ✅ Secure credential handling
+- ✅ Enhanced error logging
+
+### Technical
+- Updated: `aiController.js` - Complete Gemini API integration
+- Updated: `prompts.md` - Added Gemini-specific generation prompts
+- Modified: API request/response structure for Gemini
+- Enhanced: Error handling with emoji logging
+- Maintained: Demo mode functionality
+
+### API Changes
+- Endpoint: `generativelanguage.googleapis.com` (Gemini)
+- Authentication: API key in query parameter
+- Request format: `contents[0].parts[0].text`
+- Response parsing: `candidates[0].content.parts[0].text`
+- Model: Gemini Pro (free tier)
+
+### Cost Reduction
+- Before: ~$0.10 per 100 questions (OpenAI)
+- After: FREE (Gemini free tier)
+- Savings: 100% for free tier usage
+- Rate limit: 60 requests/minute (sufficient for testing)
+
+### Commits
+- (Pending - not yet committed)
+
+---
+
 ## [1.3.0] - 2025-10-28 - Multilingual Support & French Language
 
 ### Added

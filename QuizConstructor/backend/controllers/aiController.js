@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
-const DEMO_MODE = process.env.DEMO_MODE === 'true' || !OPENAI_API_KEY;
+const GOOGLE_GEMINI_API_KEY = process.env.GOOGLE_GEMINI_API_KEY;
+const GOOGLE_GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+const DEMO_MODE = process.env.DEMO_MODE === 'true' || !GOOGLE_GEMINI_API_KEY;
 
 // Mock quiz data for demo mode
 const generateMockQuestions = (subject, numQuestions) => {
@@ -104,39 +104,47 @@ export const generateQuestionsFromSubject = async (subject, numQuestions) => {
     return generateMockQuestions(subject, numQuestions);
   }
 
-  if (!OPENAI_API_KEY) {
-    throw new Error('OPENAI_API_KEY is not configured. Please add it to .env file');
+  if (!GOOGLE_GEMINI_API_KEY) {
+    throw new Error('GOOGLE_GEMINI_API_KEY is not configured. Please add it to .env file');
   }
 
   const prompt = `Generate ${numQuestions} multiple choice quiz questions about "${subject}". 
   For each question, provide 4 options (A, B, C, D) and indicate the correct answer.
-  Return the result as a JSON array with objects containing: question, options (array of 4 strings), and correctAnswer (A, B, C, or D).`;
+  Return the result as a JSON array with objects containing: question, options (array of 4 strings), and correctAnswer (0, 1, 2, or 3 as numeric index).
+  Only return the JSON array, no additional text.`;
 
   try {
-    console.log('Calling OpenAI API for subject:', subject);
+    console.log('🔍 Calling Google Gemini API for subject:', subject);
     const response = await axios.post(
-      OPENAI_API_URL,
+      `${GOOGLE_GEMINI_API_URL}?key=${GOOGLE_GEMINI_API_KEY}`,
       {
-        model: 'gpt-3.5-turbo',
-        messages: [{ role: 'user', content: prompt }],
-        temperature: 0.7,
+        contents: [
+          {
+            parts: [
+              {
+                text: prompt
+              }
+            ]
+          }
+        ]
       },
       {
         headers: {
-          Authorization: `Bearer ${OPENAI_API_KEY}`,
           'Content-Type': 'application/json',
         },
       }
     );
 
-    const content = response.data.choices[0].message.content;
+    const content = response.data.candidates[0].content.parts[0].text;
     const jsonMatch = content.match(/\[[\s\S]*\]/);
     if (jsonMatch) {
-      return JSON.parse(jsonMatch[0]);
+      const questions = JSON.parse(jsonMatch[0]);
+      console.log('✅ Successfully generated', questions.length, 'questions from Gemini');
+      return questions;
     }
     throw new Error('Failed to parse AI response');
   } catch (error) {
-    console.error('Error generating questions:', error.response?.data || error.message);
+    console.error('❌ Error generating questions:', error.response?.data || error.message);
     throw error;
   }
 };
@@ -145,45 +153,52 @@ export const generateQuestionsFromText = async (text, numQuestions) => {
   // Use demo mode if API key not configured or DEMO_MODE enabled
   if (DEMO_MODE) {
     console.log('📚 DEMO MODE - Generating mock questions from text');
-    // Return mock questions based on text content
     return generateMockQuestions('programming', numQuestions);
   }
 
-  if (!OPENAI_API_KEY) {
-    throw new Error('OPENAI_API_KEY is not configured. Please add it to .env file');
+  if (!GOOGLE_GEMINI_API_KEY) {
+    throw new Error('GOOGLE_GEMINI_API_KEY is not configured. Please add it to .env file');
   }
 
   const prompt = `Based on the following text, generate ${numQuestions} multiple choice quiz questions.
   Text: "${text}"
   
   For each question, provide 4 options (A, B, C, D) and indicate the correct answer.
-  Return the result as a JSON array with objects containing: question, options (array of 4 strings), and correctAnswer (A, B, C, or D).`;
+  Return the result as a JSON array with objects containing: question, options (array of 4 strings), and correctAnswer (0, 1, 2, or 3 as numeric index).
+  Only return the JSON array, no additional text.`;
 
   try {
-    console.log('Calling OpenAI API for text input');
+    console.log('🔍 Calling Google Gemini API for text input');
     const response = await axios.post(
-      OPENAI_API_URL,
+      `${GOOGLE_GEMINI_API_URL}?key=${GOOGLE_GEMINI_API_KEY}`,
       {
-        model: 'gpt-3.5-turbo',
-        messages: [{ role: 'user', content: prompt }],
-        temperature: 0.7,
+        contents: [
+          {
+            parts: [
+              {
+                text: prompt
+              }
+            ]
+          }
+        ]
       },
       {
         headers: {
-          Authorization: `Bearer ${OPENAI_API_KEY}`,
           'Content-Type': 'application/json',
         },
       }
     );
 
-    const content = response.data.choices[0].message.content;
+    const content = response.data.candidates[0].content.parts[0].text;
     const jsonMatch = content.match(/\[[\s\S]*\]/);
     if (jsonMatch) {
-      return JSON.parse(jsonMatch[0]);
+      const questions = JSON.parse(jsonMatch[0]);
+      console.log('✅ Successfully generated', questions.length, 'questions from text');
+      return questions;
     }
     throw new Error('Failed to parse AI response');
   } catch (error) {
-    console.error('Error generating questions from text:', error.response?.data || error.message);
+    console.error('❌ Error generating questions from text:', error.response?.data || error.message);
     throw error;
   }
 };
