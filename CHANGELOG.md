@@ -5,6 +5,28 @@ All notable changes to the btp-projet-ia project will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2025-10-28 - Favicon & Branding
+
+### Added
+- **Custom Favicon**: Quiz Constructor logo now displays in browser tab
+- **Public Assets Folder**: Created frontend/public for static assets
+- **Session 3 Documentation**: SESSION_3_SUMMARY.md created
+
+### Improved
+- **Visual Branding**: Professional logo icon replaces Vite default
+- **Title Cleanliness**: Removed emoji from main heading
+- **File Organization**: Proper Vite public folder structure
+
+### Technical
+- Updated: `QuizConstructor/frontend/index.html` - favicon reference
+- Updated: `QuizConstructor/frontend/src/pages/HomePage.jsx` - removed emoji
+- Created: `QuizConstructor/frontend/public/favicon.png` (2.7 KB)
+
+### Commits
+- 98ea404: feat: Add Quiz Constructor favicon and update branding
+
+---
+
 ## [1.2.0] - 2025-10-28 - Quiz Display Feature
 
 ### Added

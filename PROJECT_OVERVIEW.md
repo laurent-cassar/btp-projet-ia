@@ -1,8 +1,8 @@
 # QuizConstructor Project - Complete Overview for Copilot
 
-**Last Updated**: 2025-10-28 08:41:33 UTC  
+**Last Updated**: 2025-10-28 12:15:07 UTC  
 **Project Status**: ✅ ACTIVE DEVELOPMENT  
-**Current Version**: 1.2.0
+**Current Version**: 1.2.1
 
 ---
 
@@ -71,6 +71,9 @@ btp-projet-ia/
 │   │   │   ├── App.jsx
 │   │   │   ├── main.jsx
 │   │   │   └── index.css
+│   │   ├── public/                    (Static assets)
+│   │   │   └── favicon.png            (Site icon)
+│   │   ├── index.html
 │   │   ├── vite.config.js
 │   │   ├── tailwind.config.js
 │   │   └── package.json
@@ -388,6 +391,21 @@ VITE_API_URL=http://localhost:5000/api
 - b0010b1: Session 2 documentation
 
 **Result**: Quiz questions now visible and interactive ✅
+
+### Session 3: Favicon & Branding (2025-10-28)
+**Objective**: Use custom favicon and remove emoji branding  
+**Problem Identified**: Default Vite icon with emoji in title  
+**Solution Implemented**: Custom Quiz Constructor logo favicon  
+**Changes**:
+- Created public folder in frontend
+- Copied favicon.png from project root
+- Updated HTML favicon reference
+- Removed emoji from main title
+
+**Commits**:
+- 98ea404: Favicon and branding implementation
+
+**Result**: Professional branding with custom icon ✅
 
 ---
 
