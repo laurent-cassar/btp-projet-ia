@@ -5,6 +5,36 @@ All notable changes to the btp-projet-ia project will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2025-10-28 - Quiz Display Feature
+
+### Added
+- **Quiz Questions Display**: Users can now see actual quiz questions with expandable view
+- **Expandable Quiz Cards**: Click chevron icon to expand/collapse questions
+- **Question Details**: Display question text, options (A-D), correct answer, and explanations
+- **Visual Indicators**: 
+  - Green highlight for correct answers
+  - "✓ Correct" badge for right answer
+  - Blue explanation box for each question
+- **Live Session Documentation**: SESSION_2_SUMMARY.md created with detailed session information
+
+### Improved
+- User experience: Users now see generated quiz content immediately
+- Transparency: Users can verify quiz generation worked correctly
+- Usability: Questions accessible by clicking expand button
+- Data visualization: Letter labels (A, B, C, D) for options
+- Error handling: Graceful fallback for missing data
+
+### Technical
+- Modified: `QuizConstructor/frontend/src/components/QuizList.jsx`
+- Added state management for expanded quizzes
+- Added conditional rendering for question details
+- Integrated ChevronUp/Down icons from lucide-react
+
+### Commits
+- be5bd85: feat: Display actual quiz questions in QuizList component
+
+---
+
 ## [1.1.0] - 2025-10-28 - Demo Mode Fixes & Session Improvements
 
 ### Fixed
@@ -19,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Enhanced AGENTS.md with full agent architecture and session findings
 - .gitattributes configuration for consistent line endings
 - Session timeline and implementation status tracking
+- SESSION_1_SUMMARY.md with complete session overview
 
 ### Improved
 - Demo mode now returns properly formatted mock questions (15 per subject)
@@ -35,6 +66,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Commits
 - cb0a22c: fix: Correct demo mode quiz generation and frontend quiz saving
 - 3d28d49: docs: Add user prompts and session history to prompts.md
+- 934171c: docs: Update AGENTS, CHANGELOG, benchmarks with session 1 details
+- 28d6cd5: docs: Add session 1 complete summary
 
 ---
 
