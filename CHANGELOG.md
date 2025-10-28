@@ -5,7 +5,40 @@ All notable changes to the btp-projet-ia project will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.0] - 2025-10-28
+## [1.1.0] - 2025-10-28 - Demo Mode Fixes & Session Improvements
+
+### Fixed
+- **Demo Mode Quiz Generation**: Corrected `correctAnswer` format from letters ('A','B','C','D') to numeric indices (0,1,2,3)
+- **Quiz Not Displaying**: Frontend now properly saves generated quizzes to QuizContext via `addQuiz()`
+- **Import Missing**: Added `addQuiz` to QuizGenerator component destructuring
+- **Line Ending Inconsistencies**: Added `.gitattributes` to enforce LF line endings across all source files
+- **Demo Mode Not Enabled**: Explicitly set `DEMO_MODE=true` in backend .env configuration
+
+### Added
+- Comprehensive session documentation in `prompts.md` with all user instructions and results
+- Enhanced AGENTS.md with full agent architecture and session findings
+- .gitattributes configuration for consistent line endings
+- Session timeline and implementation status tracking
+
+### Improved
+- Demo mode now returns properly formatted mock questions (15 per subject)
+- Frontend properly displays generated quizzes in quiz list
+- Git workflow with explicit DEMO_MODE configuration
+- Documentation of all critical issues and resolutions
+
+### Session Results
+- ✅ Demo mode fully operational
+- ✅ Quiz generation and saving working correctly
+- ✅ All fixes tested and committed
+- ✅ Changes pushed to origin/feature/quizConstructor
+
+### Commits
+- cb0a22c: fix: Correct demo mode quiz generation and frontend quiz saving
+- 3d28d49: docs: Add user prompts and session history to prompts.md
+
+---
+
+## [1.0.0] - 2025-10-27
 
 ### Added
 - Initial QuizConstructor full-stack application
@@ -26,23 +59,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 - ✅ AI-powered quiz generation from subjects
 - ✅ Text-based quiz generation
-- ✅ File-based quiz generation
+- ✅ File-based quiz generation (partially implemented)
 - ✅ Quiz CRUD operations
 - ✅ Quiz list management
 - ✅ Responsive UI design
 - ✅ Loading states and error notifications
 - ✅ Multi-tab interface for different input methods
+- ✅ Demo mode for testing without API key
 
 ### Tech Stack
 - Frontend: React 18, Vite, Tailwind CSS, Lucide React, Axios
 - Backend: Express.js, Node.js, PostgreSQL, Multer, Joi
-- AI: OpenAI API (GPT)
+- AI: OpenAI API (GPT 3.5) with demo mode fallback
 - Database: PostgreSQL with JSONB support
+
+---
 
 ## [Unreleased]
 
 ### Planned Features
-- [ ] User authentication and accounts
+- [ ] User authentication and accounts (JWT)
 - [ ] Quiz sharing and collaboration features
 - [ ] Advanced analytics and performance tracking
 - [ ] Custom question types (essay, matching, drag-drop)
@@ -51,7 +87,67 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [ ] Export to PDF and DOCX formats
 - [ ] Question bank management
 - [ ] Timed quizzes
+- [ ] Real-time multiplayer quizzes
+
+### Performance Improvements
+- [ ] Implement Redis caching for frequently generated quizzes
+- [ ] Add database query optimization
+- [ ] Implement pagination for large quiz lists
+- [ ] Add response compression
+
+### Security Enhancements
+- [ ] Implement JWT authentication
+- [ ] Add rate limiting on API endpoints
+- [ ] Implement HTTPS enforcement in production
+- [ ] Add request logging and monitoring
+- [ ] Sanitize user input to prevent XSS
+- [ ] Add CSRF protection
+
+---
+
+## Known Issues
+
+### Current Session (2025-10-28)
+- File upload endpoint not fully implemented (placeholder only)
+- Database persistence disabled during demo mode (in-memory only)
+- No user authentication system
+
+### Backlog
+- [ ] Implement proper file parsing for PDF/DOCX/PPTX
+- [ ] Add database schema migration system
+- [ ] Implement comprehensive test suite
+- [ ] Add API rate limiting for OpenAI calls
+- [ ] Improve error messages for better UX
+
+---
+
+## Session Timeline
+
+### Session 1: Analysis & Documentation (2025-10-28)
+1. Analyzed project structure - identified QuizConstructor
+2. Analyzed files - found issues and created AGENTS.md, CHANGELOG.md, benchmarks.md
+3. Analyzed git repository - found 11 commits, branch divergence
+4. Fixed demo mode - corrected answer format, added quiz saving, enabled DEMO_MODE
+5. Documented session - added all user prompts to prompts.md
+6. Updated all documentation files with session details
+
+### Commits in Session 1
+```
+cb0a22c - fix: Correct demo mode quiz generation and frontend quiz saving
+3d28d49 - docs: Add user prompts and session history to prompts.md
+<pending> - docs: Update AGENTS, CHANGELOG, benchmarks with session details
+```
+
+---
+
+## Version History
+
+| Version | Release Date | Status | Key Features |
+|---------|--------------|--------|--------------|
+| 1.1.0   | 2025-10-28   | Stable | Demo mode fixes, session docs |
+| 1.0.0   | 2025-10-27   | Stable | Full-stack QuizConstructor |
 
 ---
 
 *Last updated: 2025-10-28*
+*Next planned update: After file upload implementation*
