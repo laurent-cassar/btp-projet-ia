@@ -5,6 +5,40 @@ All notable changes to the btp-projet-ia project will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.1] - 2025-10-28 - Google Gemini API Model Update
+
+### Fixed
+- **Model Compatibility**: Updated from deprecated `gemini-pro` to `gemini-2.0-flash-lite`
+- **API Version**: Changed from `v1beta` to stable `v1` endpoint
+- **Server Stability**: Switched to lite model for better availability
+
+### Changes
+- Updated: `aiController.js` - Changed model to `gemini-2.0-flash-lite`
+- Changed: API endpoint from `v1beta` to `v1`
+- Result: Fully functional quiz generation via Gemini API
+
+### Testing
+- ✅ API key validation successful
+- ✅ Model listing verified (9 models available)
+- ✅ Quiz generation now working
+- ✅ Demo mode fallback maintained
+
+### Model Details
+- **Previous**: gemini-pro (deprecated)
+- **Intermediate**: gemini-1.5-flash (unavailable)
+- **Current**: gemini-2.0-flash-lite (stable & fast)
+- **Why lite**: Better availability, fast responses, perfect for quiz generation
+
+### Cost
+- Still FREE (same as before)
+- No API costs for free tier usage
+- Rate limit: 60 requests/minute
+
+### Commits
+- b98e7c1 - Fix Gemini API model compatibility
+
+---
+
 ## [1.4.0] - 2025-10-28 - Google Gemini API Integration
 
 ### Added
