@@ -5,7 +5,48 @@ All notable changes to the btp-projet-ia project will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.2.1] - 2025-10-28 - Favicon & Branding
+## [1.3.0] - 2025-10-28 - Multilingual Support & French Language
+
+### Added
+- **French Language Support**: Complete French translation of entire UI
+- **Language Toggle Button**: Easy language switching with Globe icon
+- **LanguageContext**: Centralized translation management system
+- **useLanguage Hook**: Simple component access to translations
+- **20+ Translation Keys**: Comprehensive coverage of all UI text
+- **Session 4 Documentation**: SESSION_4_SUMMARY.md created
+
+### Features
+- ✅ Toggle between English and French
+- ✅ Instant language switching (no page reload)
+- ✅ Professional multilingual interface
+- ✅ Easy to extend with more languages
+- ✅ Accessible language button (top-right)
+- ✅ Proper French accents and formatting
+
+### Technical
+- Created: `LanguageContext.jsx` (20+ translation pairs)
+- Created: `useLanguage.js` hook
+- Updated: `App.jsx` - wrap with LanguageProvider
+- Updated: `HomePage.jsx` - add toggle button + translations
+- Updated: `QuizGenerator.jsx` - all UI text translated
+- Updated: `QuizList.jsx` - all text translated
+
+### Translated Components
+- Page title and subtitle
+- Form labels and tabs
+- Input placeholders
+- Button text
+- Empty states
+- Date labels
+- "How it works" section
+- Navigation elements
+
+### Commits
+- 3d7d8f8: feat: Add French language support with translation toggle
+
+---
+
+## [1.2.1] - 2025-10-28 - Favicon Icon in Title & Branding
 
 ### Added
 - **Custom Favicon**: Quiz Constructor logo now displays in browser tab
