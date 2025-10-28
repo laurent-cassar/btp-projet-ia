@@ -1,6 +1,7 @@
 import { Plus, FileText } from 'lucide-react';
 import { useState } from 'react';
 import { useQuiz } from '../hooks/useQuiz';
+import { useLanguage } from '../hooks/useLanguage';
 import { generateQuizFromSubject, generateQuizFromText, generateQuizFromFile } from '../hooks/useApi';
 
 export const QuizGenerator = () => {
@@ -10,6 +11,7 @@ export const QuizGenerator = () => {
   const [text, setText] = useState('');
   const [file, setFile] = useState(null);
   const { setLoading, setError, addQuiz } = useQuiz();
+  const { t } = useLanguage();
 
   const handleGenerateFromSubject = async () => {
     if (!subject.trim()) {
@@ -20,7 +22,6 @@ export const QuizGenerator = () => {
     try {
       const result = await generateQuizFromSubject(subject, numQuestions);
       console.log('Quiz generated:', result);
-      // Add the generated quiz to the context
       const quiz = {
         id: Date.now(),
         subject,
@@ -47,7 +48,6 @@ export const QuizGenerator = () => {
     try {
       const result = await generateQuizFromText(text, numQuestions);
       console.log('Quiz generated:', result);
-      // Add the generated quiz to the context
       const quiz = {
         id: Date.now(),
         subject: 'Text Content',
@@ -74,7 +74,6 @@ export const QuizGenerator = () => {
     try {
       const result = await generateQuizFromFile(file, numQuestions);
       console.log('Quiz generated:', result);
-      // Add the generated quiz to the context
       const quiz = {
         id: Date.now(),
         subject: file.name,
@@ -105,7 +104,7 @@ export const QuizGenerator = () => {
               : 'text-gray-600 hover:text-gray-800'
           }`}
         >
-          <Plus className="inline mr-2" size={20} /> By Subject
+          <Plus className="inline mr-2" size={20} /> {t('subject')}
         </button>
         <button
           onClick={() => setTab('text')}
@@ -115,7 +114,7 @@ export const QuizGenerator = () => {
               : 'text-gray-600 hover:text-gray-800'
           }`}
         >
-          <FileText className="inline mr-2" size={20} /> By Text
+          <FileText className="inline mr-2" size={20} /> {t('text')}
         </button>
         <button
           onClick={() => setTab('file')}
@@ -125,13 +124,13 @@ export const QuizGenerator = () => {
               : 'text-gray-600 hover:text-gray-800'
           }`}
         >
-          <FileText className="inline mr-2" size={20} /> By File
+          <FileText className="inline mr-2" size={20} /> {t('file')}
         </button>
       </div>
 
       <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Number of Questions
+          {t('numQuestions')}
         </label>
         <input
           type="number"
@@ -146,11 +145,11 @@ export const QuizGenerator = () => {
       {tab === 'subject' && (
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Subject
+            {t('subject')}
           </label>
           <input
             type="text"
-            placeholder="Enter a subject (e.g., History, Biology, Python Programming)"
+            placeholder={t('enterSubject')}
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4"
@@ -159,7 +158,7 @@ export const QuizGenerator = () => {
             onClick={handleGenerateFromSubject}
             className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition"
           >
-            Generate Quiz
+            {t('generateButton')}
           </button>
         </div>
       )}
@@ -167,10 +166,10 @@ export const QuizGenerator = () => {
       {tab === 'text' && (
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Text Content
+            {t('text')}
           </label>
           <textarea
-            placeholder="Paste your text here..."
+            placeholder={t('enterText')}
             value={text}
             onChange={(e) => setText(e.target.value)}
             rows="6"
@@ -180,7 +179,7 @@ export const QuizGenerator = () => {
             onClick={handleGenerateFromText}
             className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition"
           >
-            Generate Quiz
+            {t('generateButton')}
           </button>
         </div>
       )}
@@ -188,7 +187,7 @@ export const QuizGenerator = () => {
       {tab === 'file' && (
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Upload File (PDF, Word, Text, PowerPoint)
+            {t('uploadFile')}
           </label>
           <input
             type="file"
@@ -201,7 +200,7 @@ export const QuizGenerator = () => {
             onClick={handleGenerateFromFile}
             className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition"
           >
-            Generate Quiz
+            {t('generateButton')}
           </button>
         </div>
       )}
