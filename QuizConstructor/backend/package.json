@@ -21,7 +21,8 @@
     "pdfjs-dist": "^4.3.136",
     "mammoth": "^1.6.0",
     "axios": "^1.6.0",
-    "joi": "^17.11.0"
+    "joi": "^17.11.0",
+    "cheerio": "^1.0.0-rc.12"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
