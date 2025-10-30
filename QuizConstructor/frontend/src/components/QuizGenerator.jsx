@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useQuiz } from '../hooks/useQuiz';
 import { useLanguage } from '../hooks/useLanguage';
 import { generateQuizFromSubject, generateQuizFromText, generateQuizFromFile, generateQuizFromWebSearch } from '../hooks/useApi';
+import { ModelHelp } from './ModelHelp';
 
 const AVAILABLE_MODELS = [
   { id: 'gemini-2.0-flash-lite', name: 'Gemini 2.0 Flash (Lite)', description: 'Fast & reliable' },
@@ -192,9 +193,12 @@ export const QuizGenerator = () => {
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          AI Model
-        </label>
+        <div className="flex justify-between items-center mb-2">
+          <label className="block text-sm font-medium text-gray-700">
+            AI Model
+          </label>
+          <ModelHelp />
+        </div>
         <select
           value={selectedModel}
           onChange={(e) => setSelectedModel(e.target.value)}
