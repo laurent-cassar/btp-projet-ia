@@ -130,7 +130,12 @@ export const generateQuestionsFromSubject = async (subject, numQuestions, model 
     throw new Error('GOOGLE_GEMINI_API_KEY is not configured. Please add it to .env file');
   }
 
-  const prompt = `Generate ${numQuestions} multiple choice quiz questions about "${subject}". 
+  // Add randomness to generate different questions each time
+  const randomSeed = Math.floor(Math.random() * 10000);
+  const prompt = `Generate ${numQuestions} unique and diverse multiple choice quiz questions about "${subject}". 
+  Create varied questions covering different aspects of the topic. Include different difficulty levels.
+  Variation seed: ${randomSeed}
+  
   For each question, provide 4 options (A, B, C, D), indicate the correct answer, and provide a brief explanation (1-2 sentences) of why the answer is correct.
   Return the result as a JSON array with objects containing: question, options (array of 4 strings), correctAnswer (0, 1, 2, or 3 as numeric index), and explanation (string).
   Only return the JSON array, no additional text.`;
@@ -148,7 +153,12 @@ export const generateQuestionsFromSubject = async (subject, numQuestions, model 
               }
             ]
           }
-        ]
+        ],
+        generationConfig: {
+          temperature: 0.9,  // Higher temperature for more variety
+          topK: 40,
+          topP: 0.95,
+        }
       },
       {
         headers: {
@@ -167,6 +177,11 @@ export const generateQuestionsFromSubject = async (subject, numQuestions, model 
     throw new Error('Failed to parse AI response');
   } catch (error) {
     console.error('❌ Error generating questions:', error.response?.data || error.message);
+    // If model fails, try fallback to gemini-2.0-flash-lite
+    if (model !== 'gemini-2.0-flash-lite') {
+      console.log('⚠️ Retrying with gemini-2.0-flash-lite...');
+      return generateQuestionsFromSubject(subject, numQuestions, 'gemini-2.0-flash-lite');
+    }
     throw error;
   }
 };
@@ -182,8 +197,10 @@ export const generateQuestionsFromText = async (text, numQuestions, model = 'gem
     throw new Error('GOOGLE_GEMINI_API_KEY is not configured. Please add it to .env file');
   }
 
-  const prompt = `Based on the following text, generate ${numQuestions} multiple choice quiz questions.
+  const randomSeed = Math.floor(Math.random() * 10000);
+  const prompt = `Based on the following text, generate ${numQuestions} unique and diverse multiple choice quiz questions.
   Text: "${text}"
+  Variation seed: ${randomSeed}
   
   For each question, provide 4 options (A, B, C, D), indicate the correct answer, and provide a brief explanation (1-2 sentences) of why the answer is correct.
   Return the result as a JSON array with objects containing: question, options (array of 4 strings), correctAnswer (0, 1, 2, or 3 as numeric index), and explanation (string).
@@ -202,7 +219,12 @@ export const generateQuestionsFromText = async (text, numQuestions, model = 'gem
               }
             ]
           }
-        ]
+        ],
+        generationConfig: {
+          temperature: 0.9,
+          topK: 40,
+          topP: 0.95,
+        }
       },
       {
         headers: {
@@ -221,6 +243,10 @@ export const generateQuestionsFromText = async (text, numQuestions, model = 'gem
     throw new Error('Failed to parse AI response');
   } catch (error) {
     console.error('❌ Error generating questions from text:', error.response?.data || error.message);
+    if (model !== 'gemini-2.0-flash-lite') {
+      console.log('⚠️ Retrying with gemini-2.0-flash-lite...');
+      return generateQuestionsFromText(text, numQuestions, 'gemini-2.0-flash-lite');
+    }
     throw error;
   }
 };
