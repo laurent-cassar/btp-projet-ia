@@ -132,13 +132,13 @@ export const generateQuestionsFromSubject = async (subject, numQuestions, model 
 
   // Add randomness to generate different questions each time
   const randomSeed = Math.floor(Math.random() * 10000);
-  const prompt = `Generate ${numQuestions} unique and diverse multiple choice quiz questions about "${subject}". 
-  Create varied questions covering different aspects of the topic. Include different difficulty levels.
-  Variation seed: ${randomSeed}
+  const prompt = `Génère ${numQuestions} questions de quiz à choix multiples uniques et variées sur le sujet "${subject}". 
+  Crée des questions variées couvrant différents aspects du sujet. Inclus différents niveaux de difficulté.
+  Graine de variation: ${randomSeed}
   
-  For each question, provide 4 options (A, B, C, D), indicate the correct answer, and provide a brief explanation (1-2 sentences) of why the answer is correct.
-  Return the result as a JSON array with objects containing: question, options (array of 4 strings), correctAnswer (0, 1, 2, or 3 as numeric index), and explanation (string).
-  Only return the JSON array, no additional text.`;
+  Pour chaque question, fournis 4 options (A, B, C, D), indique la bonne réponse, et fournis une brève explication (1-2 phrases) de pourquoi la réponse est correcte.
+  Retourne le résultat sous forme de tableau JSON avec des objets contenant: question, options (tableau de 4 chaînes), correctAnswer (0, 1, 2, ou 3 comme index numérique), et explanation (chaîne).
+  Retourne uniquement le tableau JSON, sans texte supplémentaire. Réponds en français.`;
 
   try {
     console.log('🔍 Calling Google Gemini API for subject:', subject, '| Model:', model);
@@ -155,7 +155,7 @@ export const generateQuestionsFromSubject = async (subject, numQuestions, model 
           }
         ],
         generationConfig: {
-          temperature: 0.9,  // Higher temperature for more variety
+          temperature: 0.9,
           topK: 40,
           topP: 0.95,
         }
@@ -198,13 +198,13 @@ export const generateQuestionsFromText = async (text, numQuestions, model = 'gem
   }
 
   const randomSeed = Math.floor(Math.random() * 10000);
-  const prompt = `Based on the following text, generate ${numQuestions} unique and diverse multiple choice quiz questions.
-  Text: "${text}"
-  Variation seed: ${randomSeed}
+  const prompt = `Basé sur le texte suivant, génère ${numQuestions} questions de quiz à choix multiples uniques et variées.
+  Texte: "${text}"
+  Graine de variation: ${randomSeed}
   
-  For each question, provide 4 options (A, B, C, D), indicate the correct answer, and provide a brief explanation (1-2 sentences) of why the answer is correct.
-  Return the result as a JSON array with objects containing: question, options (array of 4 strings), correctAnswer (0, 1, 2, or 3 as numeric index), and explanation (string).
-  Only return the JSON array, no additional text.`;
+  Pour chaque question, fournis 4 options (A, B, C, D), indique la bonne réponse, et fournis une brève explication (1-2 phrases) de pourquoi la réponse est correcte.
+  Retourne le résultat sous forme de tableau JSON avec des objets contenant: question, options (tableau de 4 chaînes), correctAnswer (0, 1, 2, ou 3 comme index numérique), et explanation (chaîne).
+  Retourne uniquement le tableau JSON, sans texte supplémentaire. Réponds en français.`;
 
   try {
     console.log('🔍 Calling Google Gemini API for text input | Model:', model);

@@ -9,8 +9,22 @@ export const HomePage = () => {
   const { t, toggleLanguage, language } = useLanguage();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 relative overflow-hidden">
+      {/* Animated Background Patterns */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Floating circles */}
+        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob"></div>
+        <div className="absolute top-40 right-10 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-1/2 w-72 h-72 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000"></div>
+        
+        {/* Grid pattern */}
+        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+        
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-white/50 via-transparent to-transparent"></div>
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 py-8">
         {/* Language Toggle Button */}
         <div className="flex justify-end mb-6">
           <button
@@ -24,8 +38,8 @@ export const HomePage = () => {
         </div>
 
         <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <img src="/favicon.png" alt="Quiz Constructor" className="w-12 h-12" />
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <img src="/favicon.png" alt="Quiz Constructor" className="w-20 h-20" />
             <h1 className="text-5xl font-bold text-gray-800">
               {t('title')}
             </h1>
