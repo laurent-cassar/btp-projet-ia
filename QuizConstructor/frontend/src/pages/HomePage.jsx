@@ -1,6 +1,7 @@
 import { QuizGenerator } from '../components/QuizGenerator';
 import { QuizList } from '../components/QuizList';
 import { ErrorAlert } from '../components/ErrorAlert';
+import { Footer } from '../components/Footer';
 import { useLanguage } from '../hooks/useLanguage';
 import { Globe } from 'lucide-react';
 
@@ -53,6 +54,8 @@ export const HomePage = () => {
         </div>
 
         <QuizList />
+
+        <Footer />
       </div>
     </div>
   );
