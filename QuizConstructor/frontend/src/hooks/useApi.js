@@ -74,3 +74,15 @@ export const deleteQuiz = async (id) => {
     throw error.response?.data || error.message;
   }
 };
+
+export const generateQuizFromWebSearch = async (searchQuery, numQuestions) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/quizzes/generate/websearch`, {
+      searchQuery,
+      numQuestions,
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};

@@ -10,8 +10,10 @@ An AI-powered quiz generation platform that instantly creates quiz questions fro
 
 ### ✨ Key Features
 
-- **AI-Powered Quiz Generation**: Uses OpenAI GPT to generate intelligent quiz questions
-- **Multiple Input Methods**: Generate from subjects, text content, or uploaded files (PDF, DOCX, PPTX, TXT)
+- **AI-Powered Quiz Generation**: Uses Google Gemini & Perplexity.ai to generate intelligent quiz questions
+- **Multiple Input Methods**: Generate from subjects, text content, uploaded files (PDF, DOCX, PPTX, TXT), or **web searches ✨**
+- **Web Search Integration**: Search the web with Perplexity.ai for real-time, verified information
+- **Source Citations**: View sources used to generate questions (web search mode)
 - **Demo Mode**: Test without an API key using pre-configured mock questions
 - **Expandable Interface**: View all questions, options, and explanations with one click
 - **Responsive Design**: Built with React and Tailwind CSS for modern, mobile-friendly experience
@@ -46,7 +48,7 @@ Visit \http://localhost:3000\ and start generating quizzes!
 
 ## 📋 How It Works
 
-1. **Choose Input Method**: Subject, text, or file
+1. **Choose Input Method**: Subject, text, file, or **web search ✨**
 2. **Set Question Count**: 1-100 questions
 3. **Generate Quiz**: AI creates questions instantly
 4. **View Results**: See all questions with options and explanations

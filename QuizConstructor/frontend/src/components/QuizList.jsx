@@ -1,12 +1,14 @@
 import { useQuiz } from '../hooks/useQuiz';
 import { useLanguage } from '../hooks/useLanguage';
-import { Trash2, ChevronDown, ChevronUp } from 'lucide-react';
+import { Trash2, ChevronDown, ChevronUp, Play } from 'lucide-react';
 import { useState } from 'react';
+import { QuizPlayer } from './QuizPlayer';
 
 export const QuizList = () => {
   const { quizzes, removeQuiz } = useQuiz();
   const { t } = useLanguage();
   const [expandedQuiz, setExpandedQuiz] = useState(null);
+  const [playingQuiz, setPlayingQuiz] = useState(null);
 
   if (quizzes.length === 0) {
     return (
@@ -32,6 +34,13 @@ export const QuizList = () => {
                 </p>
               </div>
               <div className="flex gap-2">
+                <button
+                  onClick={() => setPlayingQuiz(quiz)}
+                  className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+                >
+                  <Play size={20} />
+                  Passer le quiz
+                </button>
                 <button
                   onClick={() => setExpandedQuiz(expandedQuiz === quiz.id ? null : quiz.id)}
                   className="p-2 hover:bg-blue-100 rounded-lg transition"
@@ -101,6 +110,14 @@ export const QuizList = () => {
           </div>
         ))}
       </div>
+
+      {/* Quiz Player Modal */}
+      {playingQuiz && (
+        <QuizPlayer 
+          quiz={playingQuiz} 
+          onClose={() => setPlayingQuiz(null)} 
+        />
+      )}
     </div>
   );
 };

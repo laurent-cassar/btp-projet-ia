@@ -1,8 +1,8 @@
-import { Plus, FileText } from 'lucide-react';
+import { Plus, FileText, Globe } from 'lucide-react';
 import { useState } from 'react';
 import { useQuiz } from '../hooks/useQuiz';
 import { useLanguage } from '../hooks/useLanguage';
-import { generateQuizFromSubject, generateQuizFromText, generateQuizFromFile } from '../hooks/useApi';
+import { generateQuizFromSubject, generateQuizFromText, generateQuizFromFile, generateQuizFromWebSearch } from '../hooks/useApi';
 
 const AVAILABLE_MODELS = [
   { id: 'gemini-2.0-flash-lite', name: 'Gemini 2.0 Flash (Lite)', description: 'Fast & reliable' },
@@ -18,6 +18,8 @@ export const QuizGenerator = () => {
   const [selectedModel, setSelectedModel] = useState('gemini-2.0-flash-lite');
   const [text, setText] = useState('');
   const [file, setFile] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sources, setSources] = useState([]);
   const { setLoading, setError, addQuiz } = useQuiz();
   const { t } = useLanguage();
 
@@ -99,6 +101,35 @@ export const QuizGenerator = () => {
     }
   };
 
+  const handleGenerateFromWebSearch = async () => {
+    if (!searchQuery.trim()) {
+      setError('Please enter a search query');
+      return;
+    }
+    setLoading(true);
+    setSources([]);
+    try {
+      const result = await generateQuizFromWebSearch(searchQuery, numQuestions);
+      console.log('Quiz generated from web search:', result);
+      const quiz = {
+        id: Date.now(),
+        subject: `Web: ${searchQuery}`,
+        num_questions: numQuestions,
+        questions: result.questions,
+        sources: result.sources || [],
+        created_at: new Date().toISOString()
+      };
+      addQuiz(quiz);
+      setSources(result.sources || []);
+      setSearchQuery('');
+      setError(null);
+    } catch (err) {
+      setError(err.message || 'Failed to generate quiz from web search');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8">
       <h2 className="text-3xl font-bold mb-6 text-gray-800">Create Quiz</h2>
@@ -133,6 +164,16 @@ export const QuizGenerator = () => {
           }`}
         >
           <FileText className="inline mr-2" size={20} /> {t('file')}
+        </button>
+        <button
+          onClick={() => setTab('websearch')}
+          className={`pb-2 px-4 font-semibold ${
+            tab === 'websearch'
+              ? 'border-b-2 border-blue-500 text-blue-500'
+              : 'text-gray-600 hover:text-gray-800'
+          }`}
+        >
+          <Globe className="inline mr-2" size={20} /> Web Search
         </button>
       </div>
 
@@ -230,6 +271,44 @@ export const QuizGenerator = () => {
           >
             {t('generateButton')}
           </button>
+        </div>
+      )}
+
+      {tab === 'websearch' && (
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Search Query
+          </label>
+          <input
+            type="text"
+            placeholder="e.g., Artificial Intelligence, Climate Change, World War II..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-2"
+          />
+          <p className="text-xs text-gray-500 mb-4">
+            🌐 Powered by Perplexity.ai - Searches the web for accurate, up-to-date information
+          </p>
+          <button
+            onClick={handleGenerateFromWebSearch}
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-2 px-4 rounded-lg transition"
+          >
+            🔍 Search & Generate Quiz
+          </button>
+          {sources.length > 0 && (
+            <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+              <h4 className="font-semibold text-sm text-gray-700 mb-2">📚 Sources Used:</h4>
+              <ul className="text-xs text-gray-600 space-y-1">
+                {sources.slice(0, 5).map((source, idx) => (
+                  <li key={idx} className="truncate">
+                    <a href={source} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                      {source}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       )}
     </div>

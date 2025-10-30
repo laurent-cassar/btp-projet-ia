@@ -43,4 +43,14 @@ router.post('/generate/file', upload.single('file'), async (req, res, next) => {
   }
 });
 
+router.post('/generate/websearch', async (req, res, next) => {
+  try {
+    const { searchQuery, numQuestions } = req.body;
+    const result = await aiController.generateQuestionsFromWebSearch(searchQuery, numQuestions);
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;

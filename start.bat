@@ -38,7 +38,7 @@ echo.
 echo [4/4] Demarrage des serveurs...
 echo.
 echo Backend: http://localhost:5000
-echo Frontend: http://localhost:5173
+echo Frontend: http://localhost:3000
 echo.
 echo Appuyez sur Ctrl+C pour arreter les serveurs
 echo.

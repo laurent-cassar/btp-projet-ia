@@ -9,29 +9,32 @@ This document outlines the AI agents and configurations used in the btp-projet-i
 
 ### 1. Backend AI Agent
 - **Role**: AI-powered question generation
-- **Technology**: OpenAI GPT API (with demo mode fallback)
+- **Technology**: Google Gemini API + Perplexity.ai API (with demo mode fallback)
 - **Function**: Generates quiz questions from various sources
-  - Subject-based generation
-  - Text-based generation
+  - Subject-based generation (Gemini)
+  - Text-based generation (Gemini)
   - File-based generation (PDF, DOCX, PPTX, TXT - partially implemented)
+  - **Web Search generation (Perplexity.ai) ✨ NEW**
 - **Location**: `QuizConstructor/backend/controllers/aiController.js`
 - **Demo Mode**: Enabled with `DEMO_MODE=true` in .env (includes 15 mock questions across 3 subjects)
-- **Status**: ✅ Operational (demo mode functional as of commit cb0a22c)
+- **Perplexity Integration**: Uses `llama-3.1-sonar-large-128k-online` model with web search
+- **Status**: ✅ Operational (web search added 2025-10-29)
 
 ### 2. Frontend UI Agent
 - **Role**: User interaction and quiz management interface
 - **Technology**: React 18 + Vite + Tailwind CSS + Lucide React + Context API
 - **Function**: 
-  - Collects user input (subject, text, file)
+  - Collects user input (subject, text, file, **web search ✨**)
   - Displays generated quizzes
   - Manages quiz operations (add, remove, delete)
   - Real-time state management
+  - **Shows web sources and citations ✨**
 - **Location**: `QuizConstructor/frontend/src/components`
 - **Key Components**:
-  - QuizGenerator.jsx - Main form with 3 tabs (Subject, Text, File)
+  - QuizGenerator.jsx - Main form with **4 tabs** (Subject, Text, File, **Web Search ✨**)
   - QuizList.jsx - Displays generated quizzes
   - ErrorAlert.jsx - Error notifications
-- **Status**: ✅ Operational (quiz saving fixed in commit cb0a22c)
+- **Status**: ✅ Operational (web search tab added 2025-10-29)
 
 ### 3. Database Agent
 - **Role**: Data persistence and retrieval
@@ -72,7 +75,8 @@ This document outlines the AI agents and configurations used in the btp-projet-i
 ### Environment Variables
 **Backend** (`.env`):
 ```
-OPENAI_API_KEY=              # Leave empty for demo mode
+GOOGLE_GEMINI_API_KEY=       # Google Gemini API key
+PERPLEXITY_API_KEY=          # Perplexity.ai API key (Pro account) ✨ NEW
 DEMO_MODE=true               # Enable demo mode (default if no API key)
 DB_HOST=localhost
 DB_PORT=5432
@@ -143,7 +147,7 @@ VITE_API_URL=http://localhost:5000/api
 ## Integration Architecture
 
 ```
-User Input (Subject/Text/File)
+User Input (Subject/Text/File/Web Search ✨)
     ↓
 QuizGenerator Component
     ↓
@@ -155,18 +159,36 @@ aiController.generateQuestions*()
     ↓
 Check DEMO_MODE
     ├─ TRUE → generateMockQuestions() → Mock data (15 questions)
-    └─ FALSE → OpenAI API Call → Real AI-generated questions
+    └─ FALSE → AI API Call
+        ├─ Subject/Text/File → Google Gemini API
+        └─ Web Search → Perplexity.ai API ✨
+            ├─ Step 1: Search web for information
+            ├─ Step 2: Gather sources and citations
+            └─ Step 3: Generate questions from research
     ↓
-Format Response { questions: [...] }
+Format Response { questions: [...], sources: [...] ✨ }
     ↓
-Frontend: Create quiz object
+Frontend: Create quiz object (with sources ✨)
     ↓
 QuizContext: addQuiz() → Update state
     ↓
-QuizList Component: Render quiz
+QuizList Component: Render quiz (with citations ✨)
 ```
 
 ---
+
+## Recent Enhancements (2025-10-29)
+
+### ✅ Web Search Integration with Perplexity.ai
+- **NEW FEATURE**: Generate quizzes from web searches
+- **Technology**: Perplexity.ai Pro API with `llama-3.1-sonar-large-128k-online`
+- **Benefits**:
+  - Real-time web information
+  - Verified sources and citations
+  - Multi-source aggregation
+  - Academic-quality references
+- **User Account**: laurent.cassar@laplateforme.io (Student Pro)
+- **Documentation**: See `PERPLEXITY_SETUP.md`
 
 ## Future Enhancements
 
@@ -175,6 +197,7 @@ QuizList Component: Render quiz
 - [ ] Database persistence layer (currently in-memory)
 - [ ] File upload processing agent (PDF/DOCX parsing)
 - [ ] Error recovery agent (retry logic, fallbacks)
+- [x] **Web search agent (Perplexity.ai) ✅ COMPLETED**
 
 ### Medium Priority
 - [ ] Analytics agent (quiz performance tracking)
