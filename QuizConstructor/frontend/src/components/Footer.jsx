@@ -8,14 +8,8 @@ export const Footer = () => {
           <p className="text-gray-600 font-medium mb-2">
             © {currentYear} Quiz Constructor - Tous droits réservés
           </p>
-          <div className="text-sm text-gray-500 space-y-1">
-            <p>
-              <span className="font-semibold">Chef de projet :</span> Eltigani Abdallah
-            </p>
-            <p>
-              <span className="font-semibold">Collaborateur :</span> Laurent Cassar
-            </p>
-          </div>
+          <p className="text-sm text-gray-500 font-semibold mb-1">Co-développeurs</p>
+          <p className="text-sm text-gray-500">Eltigani Abdallah &amp; Laurent Cassar</p>
         </div>
       </div>
     </footer>
