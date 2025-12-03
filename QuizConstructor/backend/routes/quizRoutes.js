@@ -36,8 +36,13 @@ router.post('/generate/text', async (req, res, next) => {
 router.post('/generate/file', upload.single('file'), async (req, res, next) => {
   try {
     const { numQuestions, model } = req.body;
-    // File processing logic will be implemented
-    res.json({ message: 'File processing endpoint' });
+    
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file provided' });
+    }
+
+    const questions = await aiController.generateQuestionsFromFile(req.file, numQuestions, model);
+    res.json({ questions });
   } catch (error) {
     next(error);
   }

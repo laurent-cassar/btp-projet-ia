@@ -1,3 +1,4 @@
+import { extractFileText, validateFileSize, validateFileType } from '../utils/fileProcessor.js';
 import axios from 'axios';
 
 const GOOGLE_GEMINI_API_KEY = process.env.GOOGLE_GEMINI_API_KEY;
@@ -355,6 +356,91 @@ export const generateQuestionsFromUrl = async (url, numQuestions, model = 'gemin
       throw new Error('Access denied to this website. Try a different URL.');
     }
     console.error('❌ Error generating questions from URL:', error.message);
+    throw error;
+  }
+};
+
+export const generateQuestionsFromFile = async (file, numQuestions, model = 'gemini-2.0-flash-lite') => {
+  try {
+    // Validate file
+    validateFileType(file.originalname);
+    validateFileSize(file.buffer);
+    
+    console.log(`📂 Processing file: ${file.originalname} (${file.size} bytes)`);
+
+    // Extract text from file
+    const fileText = await extractFileText(file.buffer, file.originalname);
+    
+    // Truncate text if too long (max 5000 chars to avoid token limits)
+    const truncatedText = fileText.substring(0, 5000);
+    
+    if (!truncatedText.trim()) {
+      throw new Error('Could not extract text from file');
+    }
+
+    // Use demo mode if API key not configured
+    if (DEMO_MODE) {
+      console.log('📚 DEMO MODE - Generating mock questions from file');
+      return generateMockQuestions('programming', numQuestions);
+    }
+
+    if (!GOOGLE_GEMINI_API_KEY) {
+      throw new Error('GOOGLE_GEMINI_API_KEY is not configured. Please add it to .env file');
+    }
+
+    console.log('🔍 Calling Google Gemini API for file');
+    
+    const prompt = `Based on the following document content, generate ${numQuestions} multiple choice quiz questions.
+
+Document Content:
+${truncatedText}
+
+Requirements:
+- Create educational questions based on the document
+- Each question should have 4 options (A, B, C, D)
+- Indicate the correct answer as a numeric index (0, 1, 2, or 3)
+- Include a brief explanation for each correct answer
+- Questions should test comprehension and retention
+
+Return ONLY a JSON array with objects containing: question, options (array of 4 strings), correctAnswer (numeric index 0-3), and explanation.
+No additional text or code blocks.`;
+
+    const response = await axios.post(
+      getApiUrl(model) + `?key=${GOOGLE_GEMINI_API_KEY}`,
+      {
+        contents: [
+          {
+            parts: [
+              {
+                text: prompt
+              }
+            ]
+          }
+        ]
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    const content = response.data.candidates[0].content.parts[0].text;
+    
+    // Extract JSON from response
+    const jsonMatch = content.match(/\[[\s\S]*\]/);
+    if (jsonMatch) {
+      const questions = JSON.parse(jsonMatch[0]);
+      console.log('✅ Successfully generated', questions.length, 'questions from file');
+      return questions;
+    }
+    throw new Error('Failed to parse AI response');
+  } catch (error) {
+    console.error('❌ Error generating questions from file:', error.response?.data || error.message);
+    if (model !== 'gemini-2.0-flash-lite') {
+      console.log('⚠️ Retrying with gemini-2.0-flash-lite...');
+      return generateQuestionsFromFile(file, numQuestions, 'gemini-2.0-flash-lite');
+    }
     throw error;
   }
 };
