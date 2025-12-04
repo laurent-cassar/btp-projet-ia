@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from 'react';
 
 export const QuizContext = createContext();
 
@@ -7,6 +7,24 @@ export const QuizProvider = ({ children }) => {
   const [currentQuiz, setCurrentQuiz] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // Load shared quiz from URL hash if present
+  useEffect(() => {
+    try {
+      const hash = window.location.hash || '';
+      if (hash.startsWith('#quiz=')) {
+        const payload = hash.replace('#quiz=', '');
+        const json = decodeURIComponent(atob(payload));
+        const quiz = JSON.parse(json);
+        // Ensure ID exists
+        if (quiz && quiz.id) {
+          setQuizzes(prev => [...prev, quiz]);
+        }
+      }
+    } catch (e) {
+      console.error('Failed to load shared quiz', e);
+    }
+  }, []);
 
   const addQuiz = (quiz) => {
     setQuizzes([...quizzes, quiz]);

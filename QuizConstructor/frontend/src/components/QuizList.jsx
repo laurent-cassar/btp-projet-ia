@@ -1,6 +1,6 @@
 import { useQuiz } from '../hooks/useQuiz';
 import { useLanguage } from '../hooks/useLanguage';
-import { Trash2, ChevronDown, ChevronUp, Play } from 'lucide-react';
+import { Trash2, ChevronDown, ChevronUp, Play, Share2 } from 'lucide-react';
 import { useState } from 'react';
 import { QuizPlayer } from './QuizPlayer';
 
@@ -9,6 +9,8 @@ export const QuizList = () => {
   const { t } = useLanguage();
   const [expandedQuiz, setExpandedQuiz] = useState(null);
   const [playingQuiz, setPlayingQuiz] = useState(null);
+  const [sharedQuizId, setSharedQuizId] = useState(null);
+  const [sharedUrl, setSharedUrl] = useState('');
 
   if (quizzes.length === 0) {
     return (
@@ -52,6 +54,26 @@ export const QuizList = () => {
                   )}
                 </button>
                 <button
+                  onClick={() => {
+                    try {
+                      const payload = btoa(encodeURIComponent(JSON.stringify(quiz)));
+                      const url = `${window.location.origin}${window.location.pathname}#quiz=${payload}`;
+                      navigator.clipboard.writeText(url);
+                      setSharedQuizId(quiz.id);
+                      setSharedUrl(url);
+                      setTimeout(() => {
+                        setSharedQuizId(null);
+                        setSharedUrl('');
+                      }, 8000);
+                    } catch (e) {
+                      console.error('Share failed', e);
+                    }
+                  }}
+                  className="p-2 hover:bg-gray-100 rounded-lg transition"
+                >
+                  <Share2 size={20} className="text-gray-600" />
+                </button>
+                <button
                   onClick={() => removeQuiz(quiz.id)}
                   className="p-2 hover:bg-red-100 rounded-lg transition"
                 >
@@ -59,6 +81,19 @@ export const QuizList = () => {
                 </button>
               </div>
             </div>
+
+            {sharedQuizId === quiz.id && (
+              <div className="mt-3 p-3 bg-gray-50 border border-gray-200 rounded">
+                <label className="block text-xs font-medium text-gray-700 mb-1">Link de partage</label>
+                <div className="flex gap-2">
+                  <input readOnly value={sharedUrl} className="flex-1 px-3 py-2 border border-gray-300 rounded bg-white text-sm" />
+                  <button
+                    onClick={() => { navigator.clipboard.writeText(sharedUrl); }}
+                    className="px-3 py-2 bg-blue-500 text-white rounded"
+                  >Copier</button>
+                </div>
+              </div>
+            )}
 
             {/* Quiz Questions */}
             {expandedQuiz === quiz.id && (
